@@ -10,6 +10,7 @@ class Todo {
   //the parameters are optional
   Todo({required this.id, required this.description, required this.isDone});
 
+  // factory 类似单例构造函数，即使多次调用也返回同一个 class 的实例对象
   factory Todo.fromDatabaseJson(Map<String, dynamic> data) => Todo(
         //Factory method will be used to convert JSON objects that
         //are coming from querying the database and converting
@@ -22,7 +23,9 @@ class Todo {
         isDone: data['isDone'] == 1,
       );
 
-  Map<String, dynamic> fromDatabaseJson() => {
+  // Todo._internal(this.id, this.description, this.isDone);
+
+  Map<String, dynamic> toDatabaseJson() => {
         //A method will be used to convert Todo objects that
         //are to be stored into the datbase in a form of JSON
         "id": this.id,
