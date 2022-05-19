@@ -8,7 +8,7 @@ class TodoDao {
   // Adds new Todo records
   Future<int> createTodo(Todo todo) async {
     final db = await dbProvider.database;
-    var result = db.insert(todoTABLE, todo.toDatabaseJson());
+    var result = db!.insert(todoTABLE, todo.toDatabaseJson());
     return result;
   }
 
@@ -19,12 +19,12 @@ class TodoDao {
     List<Map<String, dynamic>> result;
 
     if (query != null && query.isNotEmpty) {
-      result = await db.query(todoTABLE,
+      result = await db!.query(todoTABLE,
           columns: columns,
           where: 'description LIKE ?',
           whereArgs: ["%$query%"]);
     } else {
-      result = await db.query(todoTABLE, columns: columns);
+      result = await db!.query(todoTABLE, columns: columns);
     }
 
     List<Todo> todos = result.isNotEmpty
@@ -37,7 +37,7 @@ class TodoDao {
   // Update Todo record
   Future<int> updateTodo(Todo todo) async {
     final db = await dbProvider.database;
-    var result = await db.update(todoTABLE, todo.toDatabaseJson(),
+    var result = await db!.update(todoTABLE, todo.toDatabaseJson(),
         where: 'id = ?', whereArgs: [todo.id]);
     return result;
   }
@@ -45,14 +45,14 @@ class TodoDao {
   // Delete Todo record
   Future<int> deleteTodo(int id) async {
     final db = await dbProvider.database;
-    var result = await db.delete(todoTABLE, where: 'id = ?', whereArgs: [id]);
+    var result = await db!.delete(todoTABLE, where: 'id = ?', whereArgs: [id]);
     return result;
   }
 
   // Delete All Todo records
   Future<int> deleteAllTodos() async {
     final db = await dbProvider.database;
-    var result = await db.delete(todoTABLE);
+    var result = await db!.delete(todoTABLE);
     return result;
   }
 }
