@@ -17,5 +17,6 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Commands
 
-- Debug: `F5` at `main.dart`
+- Download deps: `flutter pub get`
+- Debug: `F5` at `main.dart` or `flutter run`
 - Clean & build: `cd .\android\ && .\gradlew clean build`

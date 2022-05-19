@@ -20,7 +20,7 @@ class Todo {
         //Since sqlite doesn't have boolean type for true/false,
         //we will use 0 to denote that it is false
         //and 1 for true
-        isDone: data['isDone'] == 1,
+        isDone: data['isDone'] == 0 ? false : true,
       );
 
   // Todo._internal(this.id, this.description, this.isDone);
@@ -30,6 +30,6 @@ class Todo {
         //are to be stored into the datbase in a form of JSON
         "id": this.id,
         "description": this.description,
-        "is_done": this.isDone == 1
+        "isDone": this.isDone == false ? 0 : 1
       };
 }
