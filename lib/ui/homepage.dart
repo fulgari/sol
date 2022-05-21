@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +67,7 @@ class HomePage extends StatelessWidget {
                         Icons.search,
                       ),
                       onPressed: () {
-                        // _showTodoSearchSheet(context);
+                        _showTodoSearchSheet(context);
                       },
                     ),
                     const Padding(padding: EdgeInsets.only(right: 5)),
@@ -159,7 +158,7 @@ class HomePage extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   final newTodo = Todo(
-                                      id: Random(key.hashCode).nextInt(1000),
+                                      id: DateTime.now().microsecond,
                                       description:
                                           _todoDescriptionFormController
                                               .value.text,
