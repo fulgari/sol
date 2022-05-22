@@ -96,20 +96,20 @@ class HomePage extends StatelessWidget {
   }
 
   void _showAddTodoSheet(BuildContext context) {
-    final _todoDescriptionFormController = TextEditingController();
+    final todoDescriptionFormController = TextEditingController();
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return new Padding(
+          return Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: new Container(
+            child: Container(
               color: Colors.transparent,
-              child: new Container(
+              child: Container(
                 height: 230,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: new BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(10.0),
                         topRight: const Radius.circular(10.0))),
                 child: Padding(
@@ -123,7 +123,7 @@ class HomePage extends StatelessWidget {
                         children: <Widget>[
                           Expanded(
                             child: TextFormField(
-                              controller: _todoDescriptionFormController,
+                              controller: todoDescriptionFormController,
                               textInputAction: TextInputAction.newline,
                               maxLines: 4,
                               style: TextStyle(
@@ -159,9 +159,8 @@ class HomePage extends StatelessWidget {
                                 onPressed: () {
                                   final newTodo = Todo(
                                       id: DateTime.now().microsecond,
-                                      description:
-                                          _todoDescriptionFormController
-                                              .value.text,
+                                      description: todoDescriptionFormController
+                                          .value.text,
                                       isDone: false);
                                   if (newTodo.description.isNotEmpty) {
                                     /*Create new Todo object and make sure
@@ -190,20 +189,20 @@ class HomePage extends StatelessWidget {
   }
 
   void _showTodoSearchSheet(BuildContext context) {
-    final _todoSearchDescriptionFormController = TextEditingController();
+    final todoSearchDescriptionFormController = TextEditingController();
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return new Padding(
+          return Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: new Container(
+            child: Container(
               color: Colors.transparent,
-              child: new Container(
+              child: Container(
                 height: 230,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: new BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(10.0),
                         topRight: const Radius.circular(10.0))),
                 child: Padding(
@@ -217,7 +216,7 @@ class HomePage extends StatelessWidget {
                         children: <Widget>[
                           Expanded(
                             child: TextFormField(
-                              controller: _todoSearchDescriptionFormController,
+                              controller: todoSearchDescriptionFormController,
                               textInputAction: TextInputAction.newline,
                               maxLines: 4,
                               style: TextStyle(
@@ -254,9 +253,8 @@ class HomePage extends StatelessWidget {
                                   in the textform
                                   */
                                   todoBloc.getTodos(
-                                      query:
-                                          _todoSearchDescriptionFormController
-                                              .value.text);
+                                      query: todoSearchDescriptionFormController
+                                          .value.text);
                                   //dismisses the bottomsheet
                                   Navigator.pop(context);
                                 },
@@ -302,8 +300,9 @@ class HomePage extends StatelessWidget {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, itemPosition) {
                 Todo todo = snapshot.data![itemPosition];
-                final Widget dismissibleCard = new Dismissible(
+                final Widget dismissibleCard = Dismissible(
                     background: Container(
+                      color: Colors.redAccent,
                       child: const Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Align(
@@ -311,7 +310,6 @@ class HomePage extends StatelessWidget {
                             child: Text("Deleting",
                                 style: TextStyle(color: Colors.white)),
                           )),
-                      color: Colors.redAccent,
                     ),
                     onDismissed: (direction) {
                       /*The magic
@@ -321,7 +319,7 @@ class HomePage extends StatelessWidget {
                       todoBloc.deleteTodoById(todo.id);
                     },
                     direction: _dismissDirection,
-                    key: new ObjectKey(todo),
+                    key: ObjectKey(todo),
                     child: Card(
                       shape: RoundedRectangleBorder(
                         side:
@@ -366,10 +364,9 @@ class HomePage extends StatelessWidget {
                     ));
                 return dismissibleCard;
               })
-          : Container(
-              child: Center(
+          : Center(
               child: noTodoMessageWidget(),
-            ));
+            );
     } else {
       /*since most of our I/O operations are done
         outside the main thread asynchronously
