@@ -28,9 +28,9 @@ class HomePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Container(
-              color: Colors.white,
-              padding:
-                  const EdgeInsets.only(left: 2.0, right: 2.0, bottom: 2.0),
+              color: Colors.grey.shade100,
+              padding: const EdgeInsets.only(
+                  top: 5.0, left: 5.0, right: 5.0, bottom: 2.0),
               child: getTodosWidget())),
       bottomNavigationBar: HomeBottomAppBar(todoBloc: todoBloc),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -104,7 +104,7 @@ class HomePage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         side:
                             BorderSide(color: Colors.grey.shade200, width: 0.5),
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(15),
                       ),
                       color: Colors.white,
                       child: ListTile(

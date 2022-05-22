@@ -33,7 +33,7 @@ class HomeBottomAppBar extends StatelessWidget {
                 },
               ),
               Expanded(
-                  child: Text('Tododd',
+                  child: Text('Todo',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
