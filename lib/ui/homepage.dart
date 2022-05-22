@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sol_todo_list/bloc/todo_bloc.dart';
 import 'package:sol_todo_list/model/todo.dart';
+import 'package:sol_todo_list/ui/components/homeBottomAppBar.dart';
+import 'package:sol_todo_list/ui/sheets/showAddTodoSheet.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key, required this.title}) : super(key: key);
@@ -30,59 +32,14 @@ class HomePage extends StatelessWidget {
               padding:
                   const EdgeInsets.only(left: 2.0, right: 2.0, bottom: 2.0),
               child: getTodosWidget())),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Container(
-            decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(width: 0.3, color: Colors.grey.shade300))),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    color: Colors.indigoAccent,
-                    size: 28,
-                    Icons.menu,
-                  ),
-                  onPressed: () {
-                    //just re-pull UI for testing purposes
-                    todoBloc.getTodos(query: '');
-                  },
-                ),
-                const Expanded(
-                    child: Text('Todo',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'RobotoMono',
-                            fontStyle: FontStyle.normal,
-                            fontSize: 19))),
-                Wrap(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        color: Colors.indigoAccent,
-                        size: 28,
-                        Icons.search,
-                      ),
-                      onPressed: () {
-                        _showTodoSearchSheet(context);
-                      },
-                    ),
-                    const Padding(padding: EdgeInsets.only(right: 5)),
-                  ],
-                )
-              ],
-            )),
-      ),
+      bottomNavigationBar: HomeBottomAppBar(todoBloc: todoBloc),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25),
         child: FloatingActionButton(
           elevation: 5.0,
           onPressed: () {
-            _showAddTodoSheet(context);
+            showAddTodoSheet(context, todoBloc);
           },
           backgroundColor: Colors.white,
           child: Icon(
@@ -93,183 +50,6 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _showAddTodoSheet(BuildContext context) {
-    final todoDescriptionFormController = TextEditingController();
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Container(
-              color: Colors.transparent,
-              child: Container(
-                height: 230,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(10.0),
-                        topRight: const Radius.circular(10.0))),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 15, top: 25.0, right: 15, bottom: 30),
-                  child: ListView(
-                    children: <Widget>[
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            child: TextFormField(
-                              controller: todoDescriptionFormController,
-                              textInputAction: TextInputAction.newline,
-                              maxLines: 4,
-                              style: TextStyle(
-                                  fontSize: 21, fontWeight: FontWeight.w400),
-                              autofocus: true,
-                              decoration: const InputDecoration(
-                                  hintText: 'I have to...',
-                                  labelText: 'New Todo',
-                                  labelStyle: TextStyle(
-                                      color: Colors.indigoAccent,
-                                      fontWeight: FontWeight.w500)),
-                              validator: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'Empty description!';
-                                }
-                                return value.contains('')
-                                    ? 'Do not use the @ char.'
-                                    : null;
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5, top: 15),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.indigoAccent,
-                              radius: 18,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.save,
-                                  size: 22,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  final newTodo = Todo(
-                                      id: DateTime.now().microsecond,
-                                      description: todoDescriptionFormController
-                                          .value.text,
-                                      isDone: false);
-                                  if (newTodo.description.isNotEmpty) {
-                                    /*Create new Todo object and make sure
-                                    the Todo description is not empty,
-                                    because what's the point of saving empty
-                                    Todo
-                                    */
-                                    todoBloc.addTodo(newTodo);
-
-                                    //dismisses the bottomsheet
-                                    Navigator.pop(context);
-                                  }
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
-  void _showTodoSearchSheet(BuildContext context) {
-    final todoSearchDescriptionFormController = TextEditingController();
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Container(
-              color: Colors.transparent,
-              child: Container(
-                height: 230,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(10.0),
-                        topRight: const Radius.circular(10.0))),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 15, top: 25.0, right: 15, bottom: 30),
-                  child: ListView(
-                    children: <Widget>[
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            child: TextFormField(
-                              controller: todoSearchDescriptionFormController,
-                              textInputAction: TextInputAction.newline,
-                              maxLines: 4,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w400),
-                              autofocus: true,
-                              decoration: const InputDecoration(
-                                hintText: 'Search for todo...',
-                                labelText: 'Search *',
-                                labelStyle: TextStyle(
-                                    color: Colors.indigoAccent,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              validator: (String? value) {
-                                return value!.contains('@')
-                                    ? 'Do not use the @ char.'
-                                    : null;
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5, top: 15),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.indigoAccent,
-                              radius: 18,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.search,
-                                  size: 22,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  /*This will get all todos
-                                  that contains similar string
-                                  in the textform
-                                  */
-                                  todoBloc.getTodos(
-                                      query: todoSearchDescriptionFormController
-                                          .value.text);
-                                  //dismisses the bottomsheet
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
   }
 
   Widget getTodosWidget() {
@@ -313,9 +93,9 @@ class HomePage extends StatelessWidget {
                     ),
                     onDismissed: (direction) {
                       /*The magic
-              delete Todo item by ID whenever
-              the card is dismissed
-              */
+                      delete Todo item by ID whenever
+                      the card is dismissed
+                      */
                       todoBloc.deleteTodoById(todo.id);
                     },
                     direction: _dismissDirection,
