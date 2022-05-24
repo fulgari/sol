@@ -142,7 +142,21 @@ class HomePage extends StatelessWidget {
                                       ? TextDecoration.lineThrough
                                       : TextDecoration.none))),
                     ));
-                return dismissibleCard;
+                final Widget draggableCard = Draggable<String>(
+                    // Data is the value this Draggable stores.
+                    data: 'red',
+                    child: Container(
+                      height: 120.0,
+                      width: 120.0,
+                      child: dismissibleCard,
+                    ),
+                    feedback: Container(
+                      height: 120.0,
+                      width: 120.0,
+                      child: dismissibleCard,
+                    ));
+
+                return draggableCard;
               })
           : Center(
               child: noTodoMessageWidget(),
