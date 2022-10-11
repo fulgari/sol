@@ -1,6 +1,6 @@
-# sol_todo_list
+# sol_todo_list(WIP)
 
-A new Flutter todo list project.
+A Flutter todo list project.
 
 ## Getting Started
 
